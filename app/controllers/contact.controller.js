@@ -12,7 +12,7 @@ exports.create = async (req, res, next) => {
  
     // Create a contact
     const contact = new Contact({
-        name: red.body.name,
+        name: req.body.name,
         email: req.body.email,
         address: req.body.address,
         phone: req.body.phone,
@@ -31,7 +31,7 @@ exports.create = async (req, res, next) => {
     //res.send({ message: "create handler"});
 };
 
-exports.findAll = async (red, res, next) => {
+exports.findAll = async (req, res, next) => {
     const condition = {  };
     const { name } = req.query;
     if (name){
@@ -43,13 +43,13 @@ exports.findAll = async (red, res, next) => {
         return next(new BadRequestError(500, "An error occurred while retrieving contacts"));
     }
  
-    return res.send(documents);
+    return res.send(document);
  
     //res.send({ message: "findAll handler"});
 };
 
 
-exports.findOne = async (red, res, next) => {
+exports.findOne = async (req, res, next) => {
     const { id } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id: null,
@@ -69,7 +69,7 @@ exports.findOne = async (red, res, next) => {
 };
 
 
-exports.update = async (red, res, next) => {
+exports.update = async (req, res, next) => {
  
     if (Object.keys(req.body).length === 0) {
         return next(new BadRequestError(400, "Data to update can not be empty"));
@@ -96,7 +96,7 @@ exports.update = async (red, res, next) => {
 };
 
 
-exports.delete = async (red, res, next) => {
+exports.delete = async (req, res, next) => {
     const{ id } = req.params;
     const condition = {
         _id: id && mongoose.isValidObjectId(id) ? id: null,
@@ -118,7 +118,7 @@ exports.delete = async (red, res, next) => {
     //res.send({ message: "update handler"});
 };
 
-exports.deleteAll = async (red, res, next) => {
+exports.deleteAll = async (req, res, next) => {
     const [error, data] = await handlePromise(Contact.deleteMany({ })
     );
 
@@ -130,7 +130,7 @@ exports.deleteAll = async (red, res, next) => {
     //res.send({ message: "findAllFavorite handler"});
 };
 
-exports.findAllFavorite = async (red, res, next) => {
+exports.findAllFavorite = async (req, res, next) => {
     const [error, documents] = await handlePromise(Contact.find({ 
         favorite: true, })
     );
